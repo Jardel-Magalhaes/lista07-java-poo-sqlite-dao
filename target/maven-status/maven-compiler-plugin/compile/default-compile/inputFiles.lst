@@ -1,0 +1,12 @@
+/workspaces/lista07-java-poo-sqlite-dao/src/main/java/br/com/minhaempresa/dao/FilialDAO.java
+/workspaces/lista07-java-poo-sqlite-dao/src/main/java/br/com/minhaempresa/dao/IdentificacaoDAO.java
+/workspaces/lista07-java-poo-sqlite-dao/src/main/java/br/com/minhaempresa/model/Filial.java
+/workspaces/lista07-java-poo-sqlite-dao/src/main/java/br/com/minhaempresa/dao/EstoqueDAO.java
+/workspaces/lista07-java-poo-sqlite-dao/src/main/java/br/com/minhaempresa/aplicacao/Main.java
+/workspaces/lista07-java-poo-sqlite-dao/src/main/java/br/com/minhaempresa/model/Estoque.java
+/workspaces/lista07-java-poo-sqlite-dao/src/main/java/br/com/minhaempresa/dao/FornecedorDAO.java
+/workspaces/lista07-java-poo-sqlite-dao/src/main/java/br/com/minhaempresa/util/DatabaseConnection.java
+/workspaces/lista07-java-poo-sqlite-dao/src/main/java/br/com/minhaempresa/dao/ProdutoDAO.java
+/workspaces/lista07-java-poo-sqlite-dao/src/main/java/br/com/minhaempresa/model/Identificacao.java
+/workspaces/lista07-java-poo-sqlite-dao/src/main/java/br/com/minhaempresa/model/Fornecedor.java
+/workspaces/lista07-java-poo-sqlite-dao/src/main/java/br/com/minhaempresa/model/Produto.java

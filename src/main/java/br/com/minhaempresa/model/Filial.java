@@ -1,4 +1,4 @@
-package src.main.java.br.com.minhaempresa.model;
+package br.com.minhaempresa.model;
 
 public class Filial {
     private String cnpj;

@@ -1,109 +1,104 @@
-package src.main.java.br.com.minhaempresa.dao;
+package br.com.minhaempresa.dao;
 
-import src.main.java.br.com.minhaempresa.model.Fornecedor;
-import src.main.java.br.com.minhaempresa.util.DatabaseConnection;
-import src.main.java.br.com.minhaempresa.model.Produto;
+import br.com.minhaempresa.model.Fornecedor;
+import br.com.minhaempresa.util.DatabaseConnection;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
 public class FornecedorDAO {
 
-    // Método para adicionar fornecedor
-    public void adicionarFornecedor(Fornecedor fornecedor) {
-        String sql = "INSERT INTO Fornecedor(nome, telefone, endereco) VALUES(?, ?, ?)";
+    // Outros métodos...
 
-        try (Connection conn = DatabaseConnection.connect();
-                PreparedStatement stmt = conn.prepareStatement(sql)) {
-
-            stmt.setString(1, fornecedor.getNome());
-            stmt.setString(2, fornecedor.getTelefone());
-            stmt.setString(3, fornecedor.getEndereco());
-            stmt.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
-    // Método para atualizar fornecedor
+    /**
+     * Atualiza os dados de um fornecedor no banco de dados.
+     *
+     * @param fornecedor Fornecedor com os dados atualizados.
+     */
     public void atualizarFornecedor(Fornecedor fornecedor) {
         String sql = "UPDATE Fornecedor SET nome = ?, telefone = ?, endereco = ? WHERE id = ?";
 
         try (Connection conn = DatabaseConnection.connect();
-                PreparedStatement stmt = conn.prepareStatement(sql)) {
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setString(1, fornecedor.getNome());
             stmt.setString(2, fornecedor.getTelefone());
             stmt.setString(3, fornecedor.getEndereco());
             stmt.setInt(4, fornecedor.getId());
+
             stmt.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.err.println("Erro ao atualizar fornecedor: " + e.getMessage());
         }
     }
 
-    // Método para excluir fornecedor
-    public void excluirFornecedor(int id) {
-        String sql = "DELETE FROM Fornecedor WHERE id = ?";
-
-        try (Connection conn = DatabaseConnection.connect();
-                PreparedStatement stmt = conn.prepareStatement(sql)) {
-
-            stmt.setInt(1, id);
-            stmt.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+/**
+ * Adiciona um fornecedor ao banco de dados.
+ *
+ * @param fornecedor o fornecedor a ser adicionado.
+ * @throws SQLException se ocorrer um erro ao acessar o banco de dados.
+ */
+public void adicionarFornecedor(Fornecedor fornecedor) throws SQLException {
+    String sql = "INSERT INTO Fornecedor (id, nome, telefone, endereco) VALUES (?, ?, ?, ?)";
+    try (Connection conn = DatabaseConnection.connect();
+         PreparedStatement pstmt = conn.prepareStatement(sql)) {
+        pstmt.setInt(1, fornecedor.getId());
+        pstmt.setString(2, fornecedor.getNome());
+        pstmt.setString(3, fornecedor.getTelefone());
+        pstmt.setString(4, fornecedor.getEndereco());
+        pstmt.executeUpdate();
+        System.out.println("Fornecedor adicionado com sucesso: " + fornecedor.getNome());
     }
+}
 
-    // Método para listar fornecedores
+
+/**
+ * Exclui um fornecedor do banco de dados pelo ID.
+ *
+ * @param id o ID do fornecedor a ser excluído.
+ * @throws SQLException se ocorrer um erro ao excluir o registro.
+ */
+public void excluirFornecedor(int id) throws SQLException {
+    String sql = "DELETE FROM Fornecedor WHERE id = ?";
+    try (Connection conn = DatabaseConnection.connect();
+         PreparedStatement pstmt = conn.prepareStatement(sql)) {
+        pstmt.setInt(1, id);
+        pstmt.executeUpdate();
+        System.out.println("Fornecedor com ID " + id + " excluído com sucesso.");
+    }
+}
+
+
+    /**
+     * Filtra fornecedores cadastrados.
+     *
+     * @return Lista de fornecedores cadastrados.
+     */
     public List<Fornecedor> listarFornecedores() {
-        List<Fornecedor> fornecedores = new ArrayList<>();
         String sql = "SELECT * FROM Fornecedor";
+        List<Fornecedor> fornecedores = new ArrayList<>();
 
         try (Connection conn = DatabaseConnection.connect();
-                Statement stmt = conn.createStatement();
-                ResultSet rs = stmt.executeQuery(sql)) {
+             PreparedStatement stmt = conn.prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
 
             while (rs.next()) {
                 Fornecedor fornecedor = new Fornecedor(
-                        rs.getInt("id"),
-                        rs.getString("nome"),
-                        rs.getString("telefone"),
-                        rs.getString("endereco"));
+                    rs.getInt("id"),
+                    rs.getString("nome"),
+                    rs.getString("telefone"),
+                    rs.getString("endereco")
+                );
                 fornecedores.add(fornecedor);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.err.println("Erro ao listar fornecedores: " + e.getMessage());
         }
+
         return fornecedores;
-    }
-
-    // Método para filtrar produtos por fornecedor (Assumindo que você queira
-    // filtrar produtos fornecidos por um fornecedor específico)
-    public List<Produto> filtrarProdutosPorFornecedor(int idFornecedor) {
-        List<Produto> produtos = new ArrayList<>();
-        String sql = "SELECT * FROM Produto WHERE id_fornecedor = ?";
-
-        try (Connection conn = DatabaseConnection.connect();
-                PreparedStatement stmt = conn.prepareStatement(sql)) {
-
-            stmt.setInt(1, idFornecedor);
-            ResultSet rs = stmt.executeQuery();
-
-            while (rs.next()) {
-                Produto produto = new Produto(
-                        rs.getInt("id"),
-                        rs.getInt("id_fornecedor"),
-                        rs.getString("nome"),
-                        rs.getDouble("preco"),
-                        rs.getString("validade"));
-                produtos.add(produto);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return produtos;
     }
 }

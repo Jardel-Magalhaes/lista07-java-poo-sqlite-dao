@@ -1,7 +1,7 @@
-package src.main.java.br.com.minhaempresa.dao;
+package br.com.minhaempresa.dao;
 
-import src.main.java.br.com.minhaempresa.model.Filial;
-import src.main.java.br.com.minhaempresa.util.DatabaseConnection;
+import br.com.minhaempresa.model.Filial;
+import br.com.minhaempresa.util.DatabaseConnection;
 
 import java.sql.*;
 import java.util.ArrayList;
